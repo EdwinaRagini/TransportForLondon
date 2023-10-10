@@ -11,5 +11,6 @@ namespace Tests
         public const string ToLocation = "ToLocation";
         public const string FromLocation = "FromLocation";
         public const string ArrivingTime = "ArrivingTime";
+        public const string JourneyResults ="Journey results";
     }
 }

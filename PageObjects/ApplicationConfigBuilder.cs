@@ -1,9 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace TFLFramework.AppConfig
+namespace PageObjects
 {
-    public class AppConfigBuilder
+    public class ApplicationConfigBuilder
     {
+
         private static AppSettings? _instance;
         public static AppSettings Instance => _instance ?? Create();
 

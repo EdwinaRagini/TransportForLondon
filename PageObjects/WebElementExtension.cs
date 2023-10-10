@@ -1,16 +1,12 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TFLFramework.Extensions
+namespace PageObjects
 {
-    public static class WebElementExtensions
+    public static class WebElementExtension
     {
-        public static void SendKeys(this IWebElement element, string value)
+
+        public static void SendText( this IWebElement element, string value )
         {
             element.SendKeys(Keys.Control + "a");
             element.SendKeys(Keys.Delete);
@@ -21,11 +17,12 @@ namespace TFLFramework.Extensions
         public static void SelectTextFromDropDown(this IWebElement element, string value)
         {
             var selectElement = new SelectElement(element);
-            selectElement.SelectByText(value);
+                selectElement.SelectByText(value);
         }
 
         public static string GetText(this IWebElement element) => element.Text;
 
         public static bool ElementDisplayed(this IWebElement element) => element.Displayed;
+
     }
 }

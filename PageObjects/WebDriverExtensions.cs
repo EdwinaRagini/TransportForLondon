@@ -1,30 +1,26 @@
-﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
-using OpenQA.Selenium.Support.UI;
+﻿using OpenQA.Selenium.Support.UI;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using PageObjects.Pages;
 
-namespace TFLFramework.Extensions
+namespace PageObjects
 {
+
+
     public static class WebDriverExtensions
     {
+        
 
-
-        public static bool DoesElementExist(this IWebDriver driver, string id)
+        public static void WaitForPageToLoad(this IWebDriver driver)
         {
-            try
-            {
-                driver.FindElement(By.Id(id));
-                return true;
-            }
-            catch (NoSuchElementException)
-            {
-                return false;
-            }
+            IWait<IWebDriver> wait = new OpenQA.Selenium.Support.UI.WebDriverWait(driver, TimeSpan.FromSeconds(30));
+
+            wait.Until(driver1 => ((IJavaScriptExecutor)driver).ExecuteScript("return document.readyState").Equals("complete"));
         }
 
         public static void AccecptCookies(this IWebDriver driver)
@@ -38,23 +34,18 @@ namespace TFLFramework.Extensions
             }
             catch (NoSuchElementException)
             {
-                Console.WriteLine("No Cookies Enabled");
+                Console.WriteLine("Cookies not enabled");
             }
-
         }
 
-        public static void WaitForPageToLoad(this IWebDriver driver)
-        {
-            new WebDriverWait(driver, TimeSpan.FromSeconds(120)).Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
-        }
 
-        public static IWebElement WaitForElementToExist(this IWebDriver driver, By by, int timeout = 30)
+        public static IWebElement WaitForElement(this IWebDriver driver, By by, int timeout = 10)
         {
             try
             {
                 var wait = new WebDriverWait(new SystemClock(), driver, TimeSpan.FromSeconds(timeout),
                     TimeSpan.FromMilliseconds(50));
-                var element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(by));
+                var element = wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(by));
                 return element;
             }
             catch (Exception e)
@@ -64,22 +55,21 @@ namespace TFLFramework.Extensions
             }
         }
 
-        public static IWebElement GetElement(this IWebDriver driver, By by)
+        public static IWebElement Get(this IWebDriver driver, By by)
         {
             return driver.FindElement(@by);
         }
-
-        public static void NavigateTo(this IWebDriver driver, string url)
+   
+        public static void GoTo(this IWebDriver driver, string url)
         {
             driver.Navigate().GoToUrl(url);
         }
 
-
-        public static void SubmitAndWait(this IWebDriver driver, IWebElement locator)
+        public static void SubmitAndWait(this IWebDriver driver, IWebElement element)
         {
             try
             {
-                locator.Click();
+                element.Click();
                 driver.WaitForPageToLoad();
             }
             catch (Exception e)
@@ -87,6 +77,19 @@ namespace TFLFramework.Extensions
                 Console.WriteLine(e);
             }
 
+        }
+
+        public static bool CheckElementExists(this IWebDriver driver, string id)
+        {
+            try
+            {
+                driver.FindElement(By.Id(id));
+                return true;
+            }
+            catch (NoSuchElementException)
+            {
+                return false;
+            }
         }
     }
 }

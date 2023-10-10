@@ -1,22 +1,19 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace TFLFramework.Drivers
+namespace PageObjects
 {
     public class Driver
     {
         public static bool HeadlessMode { get; private set; }
-        public Driver(BrowserTypes browserType) => GoToBrowser(browserType);
+        public Driver(BrowserTypes browserType) => Use(browserType);
 
         public IWebDriver Browser { get; private set; }
 
-        private void GoToBrowser(BrowserTypes browser)
+
+
+        private void Use(BrowserTypes browser)
         {
             switch (browser)
             {
@@ -30,7 +27,6 @@ namespace TFLFramework.Drivers
                     {
                         var chromeOptions = new ChromeOptions();
                         chromeOptions.AddArguments("headless");
-                        chromeOptions.AddArguments("--lang=en-US");
                         Browser = new ChromeDriver(AppDomain.CurrentDomain.BaseDirectory, chromeOptions);
                         HeadlessMode = true;
                         break;
@@ -49,11 +45,9 @@ namespace TFLFramework.Drivers
         }
     }
 
-
     public enum BrowserTypes
     {
         Chrome,
         HeadLessChrome
     }
 }
-
